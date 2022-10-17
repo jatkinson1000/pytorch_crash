@@ -96,6 +96,8 @@ def test_loop(dataloader, model, loss_fn):
 
 if __name__ == "__main__":
 
+    # Following tutorial at https://pytorch.org/tutorials/beginner/basics/intro.html
+
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
     # Importing data
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
