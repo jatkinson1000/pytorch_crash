@@ -1,10 +1,8 @@
 import torch
 from torch import nn
 from torch.utils.data import Dataset, DataLoader
-from torchvision import datasets, transforms
-from torchvision.transforms import ToTensor, Lambda
-import torchvision.models as models
-import matplotlib.pyplot as plt
+from torchvision import datasets
+from torchvision.transforms import ToTensor
 import os
 import pandas as pd
 from torchvision.io import read_image
@@ -89,8 +87,10 @@ def test_loop(dataloader, model, loss_fn):
 
     test_loss /= num_batches
     correct /= size
-    print(
-        f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n"
+    print("".join([
+        f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, ",
+        f"Avg loss: {test_loss:>8f} \n"
+    ])
     )
 
 
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     )
 
     # Dataloader is an API that produces 'minibatches' from the dataset
-    # It can also set up shuffling of the data every epoch to reduce overfitting
+    # It can also set up shuffling of data every epoch to reduce overfitting
     batch_size = 64
     train_dataloader = DataLoader(training_data, batch_size=64, shuffle=True)
     test_dataloader = DataLoader(test_data, batch_size=64, shuffle=True)
@@ -121,7 +121,6 @@ if __name__ == "__main__":
         print(f"Shape of y: {y.shape} {y.dtype}")
         break
 
-
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
     # Build Neural Network
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -130,10 +129,9 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using {device} device")
 
-    # Create an instance of the Neural Net class defined above and load to device
+    # Create instance of the Neural Net class defined above and load to device
     model = NeuralNetwork().to(device)
     print(model)
-
 
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
     # Train the model
@@ -147,13 +145,11 @@ if __name__ == "__main__":
     # Initialise optimiser with parameters to train and learning rate
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
-
     for t in range(epochs):
         print(f"Epoch {t+1}\n-------------------------------")
         train_loop(train_dataloader, model, loss_fn, optimizer)
         test_loop(test_dataloader, model, loss_fn)
     print("Done!")
-
 
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
     # Saving model and re-loading
